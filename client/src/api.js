@@ -1,10 +1,9 @@
 import axios from "axios";
-import { API_URL } from "./config";
 
 export const getProduct = async (id) => {
   try {
     const response = await axios({
-      url: `${API_URL}/products/${id}`,
+      url: `${process.env.PARCEL_API_URL}/products/${id}`,
       method: "GET",
       headers: {
         "Content-Type": "application/json",

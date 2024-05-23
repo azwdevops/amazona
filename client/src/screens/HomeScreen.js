@@ -1,10 +1,11 @@
 import axios from "axios";
 import Rating from "../components/Rating";
+import envs from "../../env_file";
 
 const HomeScreen = {
   render: async () => {
     const response = await axios({
-      url: "http://localhost:5000/api/products",
+      url: `${envs.API_URL}/products`,
       headers: { "Content-Type": "application/json" },
     });
     if (!response || response.statusText !== "OK") {
