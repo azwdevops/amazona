@@ -6,6 +6,15 @@ import Order from "../models/orderModel";
 const orderRoutes = express.Router();
 
 orderRoutes.get(
+  "/my-orders",
+  requestAuthorized,
+  expressAsyncHandler(async (req, res) => {
+    const orders = await Order.find({ user: req.user._id });
+    return res.send(orders);
+  })
+);
+
+orderRoutes.get(
   "/:id",
   requestAuthorized,
   expressAsyncHandler(async (req, res) => {

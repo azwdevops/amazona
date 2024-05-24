@@ -16,7 +16,23 @@ export const getProduct = async (id) => {
     }
     return response.data;
   } catch (error) {
-    console.log(error);
+    return { error: error.response.data.message || error.message };
+  }
+};
+export const getProducts = async () => {
+  try {
+    const response = await axios({
+      url: `${envs.API_URL}/products`,
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    if (response.statusText !== "OK") {
+      throw new Error(response.data.message);
+    }
+    return response.data;
+  } catch (error) {
     return { error: error.response.data.message || error.message };
   }
 };
@@ -34,7 +50,6 @@ export const signin = async ({ email, password }) => {
     }
     return response.data;
   } catch (error) {
-    console.log(error);
     return { error: error.response.data.message || error.message };
   }
 };
@@ -70,7 +85,6 @@ export const updateProfile = async ({ name, email, password }) => {
     }
     return response.data;
   } catch (error) {
-    console.log(error);
     return { error: error?.response?.data?.message || error.message };
   }
 };
@@ -107,6 +121,22 @@ export const getOrder = async (orderId) => {
     return response.data;
   } catch (error) {
     return { error: error.message };
+  }
+};
+
+export const getMyOrders = async () => {
+  try {
+    const { token } = getUserInfo();
+    const response = await axios({
+      url: `${envs.API_URL}/orders/my-orders`,
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+    });
+    if (response.statusText !== "OK") {
+      throw new Error(response.data.message);
+    }
+    return response.data;
+  } catch (error) {
+    return { error: error.response ? error.response.data.message : error.message };
   }
 };
 
