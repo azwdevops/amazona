@@ -7,12 +7,17 @@ import mongoose from "mongoose";
 import bodyParser from "body-parser";
 
 import userRoutes from "./routes/userRoutes.js";
+import orderRoutes from "./routes/orderRoutes.js";
 
 const app = express();
 
 app.use(cors());
 app.use(bodyParser.json());
 app.use("/api/users", userRoutes);
+app.use("/api/orders", orderRoutes);
+app.get("/api/paypal/clientId", (req, res) => {
+  res.send({ clientId: process.env.PAYPAL_CLIENT_ID });
+});
 
 app.get("/api/products", (req, res) => {
   res.send(data.products);

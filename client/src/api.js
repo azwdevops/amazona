@@ -55,6 +55,7 @@ export const register = async ({ name, email, password }) => {
     return { error: error.response.data.message || error.message };
   }
 };
+
 export const updateProfile = async ({ name, email, password }) => {
   try {
     const { _id, token } = getUserInfo();
@@ -70,6 +71,67 @@ export const updateProfile = async ({ name, email, password }) => {
     return response.data;
   } catch (error) {
     console.log(error);
-    return { error: error.response.data.message || error.message };
+    return { error: error?.response?.data?.message || error.message };
+  }
+};
+
+export const createOrder = async (order) => {
+  try {
+    const { token } = getUserInfo();
+    const response = await axios({
+      url: `${envs.API_URL}/orders/place-order`,
+      method: "POST",
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+      data: order,
+    });
+    if (response.statusText !== "Created") {
+      throw new Error(response.data.message);
+    }
+    return response.data;
+  } catch (error) {
+    return { error: error.response ? error.response.data.message : error.message };
+  }
+};
+
+export const getOrder = async (orderId) => {
+  try {
+    const { token } = getUserInfo();
+    const response = await axios({
+      url: `${envs.API_URL}/orders/${orderId}`,
+      method: "GET",
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+    });
+    if (response.statusText !== "OK") {
+      throw new Error(response.data.message);
+    }
+    return response.data;
+  } catch (error) {
+    return { error: error.message };
+  }
+};
+
+export const getPaypalClientId = async () => {
+  const response = await axios({ url: `${envs.API_URL}/paypal/clientId`, headers: { "Content-Type": "application/json" } });
+  if (response.statusText !== "OK") {
+    throw new Error(response.data.message);
+  }
+  return response.data.clientId;
+};
+
+export const payOrder = async (orderId, paymentResult) => {
+  try {
+    const { token } = getUserInfo();
+    const response = await axios({
+      url: `${envs.API_URL}/orders/${orderId}/pay`,
+      method: "PUT",
+      headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
+      data: paymentResult,
+    });
+    if (response.statusText !== "OK") {
+      throw new Error(response.data.message);
+    }
+    return response.data;
+  } catch (error) {
+    return { error: error.response ? error.response.data.message : error.message };
   }
 };

@@ -41,7 +41,7 @@ const ProfileScreen = {
             </li>
             <li>
               <label for="name">Name</label>
-              <input type="name" name="name" id="name" value="${name}">
+              <input type="text" name="name" id="name" value="${name}">
             </li>
             <li>
               <label for="email">Email</label>

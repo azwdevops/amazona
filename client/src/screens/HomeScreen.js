@@ -15,6 +15,7 @@ const HomeScreen = {
       return `<div>Error in getting data</div>`;
     }
     const products = response.data;
+    console.log("2".repeat(24));
 
     return `
       <ul class="products">
@@ -27,7 +28,7 @@ const HomeScreen = {
                 <img src="${product.image}" alt="${product.name}" />
               </a>
               <div class="product-name">
-                <a href="/#/product/1">${product.name}</a>
+                <a href="/#/product/${product._id}">${product.name}</a>
               </div>
               <div class='product-rating'>
                 ${Rating.render({ value: product.rating, text: product.numReviews + " reviews" })}
